@@ -1,0 +1,15 @@
+# simulación de serie de tiempo
+pob<- sample(100:120,15,replace= F) #rango de los datos,cuantos datos quiero,Si se puede remplazar o no
+pob
+#la convertimos en serie de tiempo
+pobts <- ts (pob, frequency=1,start = (2000))#ts=serie de tiempo/ Nombre de los datos, Que tanto se repiten(anual),En que año inicia
+end (pobts)#Donde termina
+start(pobts)#Donde inicia
+plot(pobts)#darle formato/graficar
+plot(aggregate(pobts))
+
+#bajar del inegi 
+infor4<- read.csv("file:///C:/Users/USUARIO/Desktop/Indicadores.csv")#Importar datos
+infor4
+inforts <- ts (infor4,frequency=4, start=(2005))
+plot(inforts , ylim = c(0,100))
