@@ -1,0 +1,30 @@
+
+series<- read.csv("C://Users//USUARIO//Desktop//tarea.csv")
+parcial<- ts(series[,1],frequency=4,start = 2005)
+asalariados <- ts(series[,2],frequency=4,start=2005)
+til<- ts(series[,3],frequency = 4,start=2005)
+multiple<- ts.intersect(parcial,asalariados,til)#declarampos una serie de tiempo multiple 
+plot(multiple)
+
+
+#############Ejercicio##########################
+ejercicio<- read.csv("C://Users//USUARIO//Desktop//ejercicio2.csv")
+uno<-ts(ejercicio[,1],frequency=4,start = 2005)
+dos<-ts(ejercicio[,2],frequency=4,start = 2005)
+tres<-ts(ejercicio[,3],frequency=4,start = 2005)
+cuatro<-ts(ejercicio[,4],frequency = 4,start=2005)
+plot(uno)
+plot(dos)
+plot(tres)
+multiple2<-ts.intersect(uno,dos,tres)
+plot(multiple)
+uno_uno<-window (uno,start=2005, end =c(2008,4))
+uno_dos<-window (uno,start=2009, end =c(2013,4))
+uno_tres<-window (uno,start=2009, end =2017)
+dos_uno<- window(dos,start=2005,end=c(2008,4))
+dos_dos<-window (dos,start=2009, end =c(2013,4))
+dos_tres<-window (dos,start=2013, end =2017)
+plot(aggregate(uno))
+boxplot(uno~cycle(uno))
+plot(aggregate(dos))
+boxplot(dos~cycle(dos))
