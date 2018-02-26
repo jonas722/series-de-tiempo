@@ -1,0 +1,62 @@
+#El modelo multiplicativo mas apropiado para las fluctuaciones estacionales, o las variaciones al rededor de la trendencia
+#El modelo multiplicativo se aplica cuando exista una variación más proporcional en el patron estacional o al rededor de la tendencia con series economicas 
+#el  modelo multiplicativo es más común 
+#Otro uso del modelo multiplicativo es transformar primero los datos hasta que la variación en la serie sea estable en el tiempo
+#Para descomponer una serie de tiempo se utilizan diversos métodos por ejemplo la funcion descompose () en R,
+##Las series de tiempo se descomponen por si queremos quitar la estacional o la tendencia.
+#decompose() logra obtener los 3 componentes
+# a traves de la funcion calcula elvalor de la tenbdencia usando medias moviles,
+#la estacionalidad son promedios de los indices de estacionalidad que se obtienen
+#al desestacionalizar la serie por el modelo elegido
+#por ultimo, el componente aleatorio se obtiene eliminando la tendencia
+
+install.packages("fpp")
+install.packages("forecast")
+require(fpp)
+require(forecast)
+deso<- read.csv("C://Users//USUARIO//Desktop//desocupacion.csv")
+tsdeso<- ts(deso,frequency = 4,start = 2005)
+tsdeso0<- ts(deso[1:52,],frequency = 4, start = 2005)
+tsdeso1<- ts(as.vector())
+a0<-decompose(tsdeso0)
+names(a0)
+a1<- stl(tsdeso0, s.window = 4)
+names(a1)
+a1$time.series
+x11()
+plot(tsdeso0, col="blue", main="desocupacion trimestral",ylab="tasade desocupados", xlab="Años")
+lines(a1$time.series[,2],col="red",ylab="tendencia")
+plot(a1)
+#Muestra la descomposición aditiva, el método que se uso para descomponer es el stl()
+############################ 3 estacionalidad #######################
+#Ahora para ver la estacionalidad graficamente podriamos ver gráficas estacionales, para esto hay una función que nos permite ver lo anterior, se utiliza la función monthplot(
+x11()
+monthplot(a1$time.series[,"seasonal"],main="", ylab = "Seasonal")
+#Si el componente esyacional es eliminado de la serie de tiempo se le llama ajuste estacional para un modelo aditivo el ajuste estacional se da por yt-st, para el modelo multiplicativo se define yt/st
+############# Ajuste estacional (desestacionalizar) #################
+#para hacer un ajuste estacional y desestacionalizar la serie se utiliza la funcion seasadj(
+#Si la estacionalidad no es un elemento prioritario en la serie 
+#Entonces eliminar la estacionalidad puede resultar benefico para el análisis 
+#por ejemplo los datos de desempleo tienen un ajuste en un periodo en especifico(diciembre un alza importante por las festividades)
+#Sin embargo lo que más interesa saber 
+x11()
+plot(tsdeso0,col="brown", main="Tasa de desocupación",xlab="años")
+lines(seasadj(a1),col="black",ylab="ajuste estacional")
+#En esta gáfica se puede observar que se mantienen la tendecia sin embargo los picos en periodos constantes 
+#las series desestacionalizadas mantienen el componente tendencia y aleatorio, por lo que es importante ser cuidadosos en estos análisis
+
+##################### EJERCICIO #################################
+#1
+ejercicio<-AirPassengers
+ejer_desc<- stl(ejercicio, s.window = 12)
+#Comprobación
+comprobacion<- (-17.896297+123.2952+ 6.60105106)
+#2
+x11()
+plot(ejercicio, col="blue", main="",ylab="", xlab="")
+lines(ejer_desc$time.series[,2],col="red",ylab="tendencia")
+
+#3
+x11()
+plot(ejercicio,col="brown", main="",xlab="")
+lines(seasadj(ejer_desc),col="black",ylab="")
