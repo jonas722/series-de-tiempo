@@ -1,0 +1,60 @@
+title: "Arima"
+author: "ImeLDa Mendieta Z"
+date: "16 de abril de 2018"
+output: html_document
+---
+Arima: Autorregresivo y medias moviles 
+Modelo autorregresivo
+Es un modelo de regresión multiple se pronóstica la variable de interes, utilizando una combinación lineal de productores.
+En un modelo AR se pronóstica la variable de interes usando una combinación lineal de valores anteriores. el término autorregresivo indica que es una regresión de la variable 
+Un modelo mAR de la variable p se define:
+Yt=c+a(yt-1)+a2(yt-2)+...+ae(y-p)+et
+Para estos modelos C es constante y et es ruido blanco
+Los modelos AR son muy flexibles y pueden ser utilizados es series de tiempo de diversos patrones 
+En los modelos AR de orden 1:
+Yt=C+a(yt-1)+et
+Se cumple lo sig.
+Si a1=0 el modelo es ruido blanco 
+a1=1 y c=0 entonces yt es un modelo de caminata aleatoria 
+a1= y c=/0 en un modelo de caminata aleatoria con deriva 
+a1<0, yt osila entre valores positivos y negativos 
+ARIMA(p,d,q)
+p=Ordenes del modelo autorregresivo; 
+d=Diferencicaciones para convertirla en serie estacionaria; 
+q=Orden de promedios movies              
+
+Modelos de promedios móviles (MA)
+Los modelos de medias móviles se plantean de la sig forma:
+yt=C+et+a1(et-1)+a2(et-2)+...+aq(et+q)
+En estos modelos cada valor de yt puede ser pensado como un promedio móvil ponderado de los errores de los pronósticos.
+Es importante no confundir el suavizado de promedios moviles con modelos de promedios móviles 
+Modelos de MA... Pronóstica 
+Suavizado de MA... Estima tendencias y ciclos 
+
+MODELOS ARIMA NO ESTACIONALES 
+
+En estos modelos se combina la diferenciación con modelos autorregresivo (AR) y medias móviles (MA) los modelos ARIMA es un acrónimo para Autoregresive Integrated Moving Averenge. El modelo ARIMA se plantea de la siguiente forma:
+y't=c+a1(y´t-1)+...+ap(y´t-p)+b1(et-1)+...+bq(et-q)
+b=teta
+
+Para los modelos ARIMA se utilizan las condiciones de estacionariedad de los modelos AR y MA
+Una vez que se plantean los modelos se procede a elegir los valores de p,d,q.
+A grandes rasgos los modelos ARIMA se pueden expresar de la sig manera:
+ARIMA(0,0,0)... modelo con ruido
+ARIMA(0,1,0)... modelo con caminata aleatoria 
+ARIMA (p,0,0)... modelo autorregrsivo 
+ARIMA (0,0,q)... modelo de medias móviles 
+
+```{r}
+deso<- read.csv("C://Users//USUARIO//Downloads//deso.csv")
+```
+```{r}
+desot<- ts(deso,start=2005,frequency = 4)
+require(fpp)
+mod1<- auto.arima(desot,seasonal = F)
+mod1
+x11()
+plot(forecast(mod1,h=10))
+
+```
+
